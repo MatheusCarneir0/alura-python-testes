@@ -1,4 +1,11 @@
+"""
+Controller para autenticação de usuários.
+"""
+import os
+import sys
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from services.auth_service import login_user
 from models.user_model import serialize_user
 
@@ -14,8 +21,7 @@ def login():
     user = login_user(data["email"], data["password"])
     if not user:
         flash("Credenciais inválidas")
-        return redirect(url_for("auth.login_page"))
-    
+        return redirect(url_for("auth.login_page"))    
     session["user"] = serialize_user(user)
     return redirect(url_for("auth.dashboard"))
 

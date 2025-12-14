@@ -1,7 +1,8 @@
-# Conecta ao  banco de dados MongoDB utilizando as variáveis de ambiente
-
-from pymongo import MongoClient
+"""
+Conecta ao  banco de dados MongoDB utilizando as variáveis de ambiente
+"""
 import os
+from pymongo import MongoClient
 from dotenv import load_dotenv
 
 # Carrega as variáveis de ambiente do arquivo .env
@@ -13,8 +14,12 @@ load_dotenv()
 client = MongoClient(os.getenv("MONGO_URI"))
 
 # Seleciona o banco de dados
-db = client["burguer_app_db"]
+db = client["burger_app_db"]
 
-# função para retornar a instância do banco de dados
+"""Função para retornar a instância do banco de dados """
 def get_db():
+    """Retorna a instância do banco de dados.
+    Returns:
+        db: Instância do banco de dados MongoDB.
+        """
     return db
