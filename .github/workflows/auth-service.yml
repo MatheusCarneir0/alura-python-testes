@@ -1,0 +1,30 @@
+name: Teste Auth Service
+
+on:
+  push:
+    branches: [aula-6]
+  pull_request:
+    branches: [aula-6]
+
+jobs:
+  test-auth-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure Python 3.13.5
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13.5
+
+      - name: Install dependencies
+        working-directory: /burguer-app/auth-service
+        run: |
+          pip install -r requirements.txt
+
+      - name: Rodar testes
+        working-directory: /burguer-app/auth-service
+        run: |
+          pytest -v
+
