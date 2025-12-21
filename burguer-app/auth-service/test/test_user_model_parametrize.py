@@ -12,6 +12,7 @@ from models.user_model import serialize_user
             "name": "Test User",
             "address": "123 Test St",
             "role": "admin"
+        
         },
         {
             "email": "tete@example.com",
@@ -26,6 +27,17 @@ from models.user_model import serialize_user
         },
         {
             "email": "tete@example.com",
+            "name": "",
+            "address": "",
+            "role": "cliente"
+        }
+    ),
+    (
+        {
+            "email": "teste@example.com",
+        },
+        {
+            "email": "teste@example.com",
             "name": "",
             "address": "",
             "role": "cliente"
@@ -56,31 +68,31 @@ from models.user_model import serialize_user
     ),
     (
         {
-            "email": 123,
-            "name": ["Teste", "Ususario"],
-            "address": {"street": "123 Test St"},
+            "email": 12345,
+            "name": ["Teste", "User"],
+            "address": {"Rua Teste"},
             "role": True
         },
         {
-            "email": 123,
-            "name": ["Teste", "Ususario"],
-            "address": {"street": "123 Test St"},
+            "email": 12345,
+            "name": ["Teste", "User"],
+            "address": {"Rua Teste"},
             "role": True
         }
-    )
+    )       
 ])
 
-def test_serialize_user_parametrized(user, esperado):
+def test_serialize_user_parametrizado(user, esperado):    
     resultado = serialize_user(user)
     assert resultado == esperado
 
-@pytest.mark.parametrize("entrada", [
-     None,
-     "string",
-     12345,
-     []
+@pytest.mark.parametrize("entrada", [   
+    None,
+    "string teste",
+    [],
+    123456
 ])
 
-def test_serialize_user_parametrizado_execucao(entrada):
+def test_serialize_user_parametrizado_excecao(entrada):
     with pytest.raises(AttributeError):
         serialize_user(entrada)
