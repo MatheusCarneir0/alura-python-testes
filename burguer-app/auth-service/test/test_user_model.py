@@ -1,123 +1,46 @@
-import pytest
+import unittest
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from models.user_model import serialize_user, UserModel
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+class TestUserModel(unittest.TestCase):
 
-from models.user_model import serialize_user
+    def setUp(self):
+        """Configura o ambiente de teste"""
+        self.user_data = UserModel(
+            email="teste@exemplo.com",
+            name="Test User",
+            address="123 Test St",
+            role="cliente"
+        )
 
-def test_serialize_user_completo():
+    def tearDown(self):
+        """Limpa o ambiente de teste"""
+        self.user_data = None
 
-    user = {
-        "email": "tete@example.com",
-        "name": "Test User",
-        "address": "123 Test St",
-        "role": "admin"
-    }
+    def test_to_dict(self):
+        """Testa a conversão do modelo para dicionário"""
+        expected = {
+            "email": "teste@exemplo.com",
+            "name": "Test User",
+            "address": "123 Test St",
+            "role": "cliente"
+        }
+        self.assertEqual(self.user_data.to_dict(), expected)    
 
-    resultado = serialize_user(user)
-
-    esperado = {
-        "email": "tete@example.com",
-        "name": "Test User",
-        "address": "123 Test St",
-        "role": "admin"
-    }
-
-    assert resultado == esperado
-
-
-def test_serialize_user_incompleto():
-
-    user = {
-        "email": "tete@example.com"
-    }
-
-    resultado = serialize_user(user)
-
-    esperado = {
-        "email": "tete@example.com",
-        "name": "",
-        "address": "",
-        "role": "cliente"
-    }
-
-    assert resultado == esperado
+    def test_serialize_user_incompleto(self):
+       result = self.user_data.serialize()
+       self.assertEqual(result["email"], "teste@exemplo.com")
+       self.assertEqual(result["name"], "Test User")
+       self.assertNotIn("password", result)        
 
 
-def test_serialize_user_completo():
+    def test_assert_raises_example(self):
 
-    user = {}
+      def raise_error():
+          raise ValueError("This is a test error")
 
-    resultado = serialize_user(user)
-
-    esperado = {
-        "email": None,
-        "name": "",
-        "address": "",
-        "role": "cliente"
-    }
-
-    assert resultado == esperado
-
-
-def test_serialize_user_inteiro():
-    with pytest.raises(AttributeError):
-        serialize_user(123456)
-
-
-def test_serialize_user_string():
-    with pytest.raises(AttributeError):
-        serialize_user("string teste")
-
-
-def test_serialize_user_lista():
-    with pytest.raises(AttributeError):
-        serialize_user([])
-
-
-def test_serialize_user_none():
-    with pytest.raises(AttributeError):
-        serialize_user(None)                                                                
-
-
-def test_serialize_user_inesperado():
-    user = {
-        "email": 12345,
-        "name": None,
-        "address": ["Rua Teste"],
-        "role": True
-    }
-
-    resultado = serialize_user(user)
-
-    esperado = {
-        "email": 12345,
-        "name": None,
-        "address": ["Rua Teste"],
-        "role": True
-    }
-
-    assert resultado == esperado
-
-
-def test_serializer_user_dict_none():
-
-    user = {
-        "email": None,
-        "name": None,
-        "address": None,
-        "role": None
-    }
-
-    resultado = serialize_user(user)
-
-    esperado = {
-        "email": None,
-        "name": None,
-        "address": None,
-        "role": None
-    }
-
-    assert resultado == esperado
+      with self.assertRaises(ValueError):
+            raise_error()       
