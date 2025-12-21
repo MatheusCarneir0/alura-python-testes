@@ -13,10 +13,10 @@ jobs:
             - name: Checkout de código
               uses: actions/checkout@v4
 
-            - name: Configurar Python 3.12.4
+            - name: Configurar Python 3.13.5
               uses: actions/setup-python@v4
               with:
-                python-version: '3.12.4'
+                python-version: '3.13.5'
 
             - name: Install dependencies
               working-directory: ./burguer-app/auth-service
@@ -24,7 +24,7 @@ jobs:
                 pip install -r requirements.txt
 
             - name: Rodar testes
-              working-directory: ./burguer-app/auth-service
+
               run: |
-                pytest -v --cov=models --cov=services --cov=config --cov=controllers
-                radon cc models/user_model.py
+               pytest -v  --cov=models --cov=services --cov=config --cov=controllers 
+               radon cc ./burguer-app/auth-service/models/user_model.py
